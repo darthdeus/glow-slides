@@ -241,12 +241,6 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Invertible $1\times1$ convolution}
-
-  \includegraphics[width=1.0\textwidth]{conv-vs-shuffle-reverse.png}
-\end{frame}
-
-\begin{frame}
   \frametitle{Affine coupling layer}
 
   Since both of the previous operations are affine transformation, the affine
@@ -292,12 +286,22 @@
     \end{pmatrix}
   \]
 
-  We don't actually have to compute $\frac{\partial y_2}{\partial x_1}$ to get $\det J$.
-  Note that the $\frac{\partial y_2}{\partial x_2}$ is just $diag(s(x_1))$, because the Jacobian
-  of an affine transform is a diagonal matrix.
+  We don't actually have to compute $\frac{\partial y_2}{\partial x_1}$ to get
+  $\det J$.  Note that the $\frac{\partial y_2}{\partial x_2}$ is just
+  $diag(s(x_1))$, which means we don't need to compute the Jacobian of $s(x_1)$
+  and can choose it to be any invertible neural net!
+
+  % TODO: fuj tohle je lez?
 
   \href{https://github.com/kmkolasinski/deep-learning-notes/blob/master/seminars/2018-10-Normalizing-Flows-NICE-RealNVP-GLOW/notebooks/flow_layers.py}{\beamergotobutton{Affine Coupling Layer source code}}
 \end{frame}
+
+\begin{frame}
+  \frametitle{Invertible $1\times1$ convolution $+$ Affine coupling layer}
+
+  \includegraphics[width=1.0\textwidth]{conv-vs-shuffle-reverse.png}
+\end{frame}
+
 
 %%%%%%%%%%%%%%%%%%%%
 
@@ -400,17 +404,18 @@
   \frametitle{References}
 
   \begin{itemize}
-    \item \href{https://arxiv.org/abs/1605.08803}{\beamergotobutton{Density estimation using Real NVP}}, Laurent Dinh, Jascha Sohl-Dickstein, and Samy Bengio.
-    \item \href{https://arxiv.org/abs/1410.8516}{\beamergotobutton{NICE: Non-linear Independent Components Estimation}} Laurent Dinh, David Krueger, and Yoshua Bengio.
-    \item \href{https://arxiv.org/abs/1807.03039}{\beamergotobutton{Glow: Generative Flow with Invertible 1x1 Convolutions}} Diederik P. Kingma, and Prafulla Dhariwal.
-    \item \href{https://arxiv.org/pdf/1505.05770.pdf}{\beamergotobutton{Variational Inference with Normalizing Flows}} Danilo Jimenez Rezende, Shakir Mohamed.
+    \item \href{https://arxiv.org/abs/1605.08803}{\beamergotobutton{Density estimation using Real NVP}} {\tiny Laurent Dinh, Jascha Sohl-Dickstein, and Samy Bengio.}
+    \item \href{https://arxiv.org/abs/1410.8516}{\beamergotobutton{NICE: Non-linear Independent Components Estimation}} {\tiny Laurent Dinh, et al.}
+    \item \href{https://arxiv.org/abs/1807.03039}{\beamergotobutton{Glow: Generative Flow with Invertible 1x1 Convolutions}} {\tiny Diederik P. Kingma, and Prafulla Dhariwal.}
+    \item \href{https://arxiv.org/pdf/1505.05770.pdf}{\beamergotobutton{Variational Inference with Normalizing Flows}} {\tiny Danilo Jimenez Rezende, Shakir Mohamed.}
+    \item \href{https://github.com/darthdeus/LML-basement/blob/master/notes/Glow_Notes.pdf}{\beamergotobutton{Notes on "Glow"}} {\tiny Xavier Garcia.}
 
-    \item \href{https://lilianweng.github.io/lil-log/2018/10/13/flow-based-deep-generative-models.htm}{\beamergotobutton{Flow-based Deep Generative Models}}, Lilian Weng
-    \item \href{https://blog.evjang.com/2018/01/nf1.html}{\beamergotobutton{Normalizing Flows Tutorial, Part 1: Distributions and Determinants}}, Eric Jang.
-    \item \href{https://blog.evjang.com/2018/01/nf2.html}{\beamergotobutton{Normalizing Flows Tutorial, Part 2: Modern Normalizing Flows}}, Eric Jang.
-    \item \href{http://akosiorek.github.io/ml/2018/04/03/norm_flows.html}{\beamergotobutton{Normalizing Flow}}, Adam Kosiorek.
-    \item \href{https://github.com/kmkolasinski/deep-learning-notes/tree/master/seminars/2018-09-Introduction-to-Normalizing-Flows}{\beamergotobutton{Introduction to Normalizing Flows}}, Krzysztof Kolasinski
-    \item \href{https://github.com/kmkolasinski/deep-learning-notes/tree/master/seminars/2018-10-Normalizing-Flows-NICE-RealNVP-GLOW}{\beamergotobutton{Normalizing Flows: From NICE, RealNVP to GLOW}}, Krzysztof Kolasinski
+    \item \href{https://lilianweng.github.io/lil-log/2018/10/13/flow-based-deep-generative-models.htm}{\beamergotobutton{Flow-based Deep Generative Models}} {\tiny Lilian Weng}
+    \item \href{https://blog.evjang.com/2018/01/nf1.html}{\beamergotobutton{Normalizing Flows Tutorial, Part 1: Distributions and Determinants}} {\tiny Eric Jang.}
+    \item \href{https://blog.evjang.com/2018/01/nf2.html}{\beamergotobutton{Normalizing Flows Tutorial, Part 2: Modern Normalizing Flows}} {\tiny Eric Jang.}
+    \item \href{http://akosiorek.github.io/ml/2018/04/03/norm_flows.html}{\beamergotobutton{Normalizing Flow}} {\tiny Adam Kosiorek.}
+    \item \href{https://github.com/kmkolasinski/deep-learning-notes/tree/master/seminars/2018-09-Introduction-to-Normalizing-Flows}{\beamergotobutton{Introduction to Normalizing Flows}} {\tiny Krzysztof Kolasinski}
+    \item \href{https://github.com/kmkolasinski/deep-learning-notes/tree/master/seminars/2018-10-Normalizing-Flows-NICE-RealNVP-GLOW}{\beamergotobutton{Normalizing Flows: From NICE, RealNVP to GLOW}} {\tiny Krzysztof Kolasinski}
   \end{itemize}
 \end{frame}
 
