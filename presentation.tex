@@ -26,6 +26,17 @@
 \frame{\titlepage}
 
 \begin{frame}
+  \frametitle{Agenda}
+
+  \begin{itemize}
+    \item Comparison of generative models.
+    \item Normalizing flows.
+    \item Glow architecture.
+    \item Samples, demo, results.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
 
   \frametitle{Generative Models}
 
@@ -75,7 +86,8 @@
       directly.
 
     \item \textbf{GAN} plays minimax and learns the distribution of data implicitly as a
-      side effect.
+      side effect. Suffer from mode collapse, difficult to train, difficult to assess
+      overfitting.
 
     \item \textbf{VAE} indirectly optimizes the log-likelihood by maximizing the
       ELBO. Only learns an approximation of $p(z | x)$.
@@ -92,6 +104,27 @@
   \frametitle{Three Types of Generative Models}
 
   \includegraphics[width=1.0\textwidth]{three-generative-models.png}
+\end{frame}
+
+\begin{frame}
+  \frametitle{GANs are obviously wrong {\DejaSans 😋} But what's so bad about VAE?}
+
+  \begin{itemize}
+    \item We need a VAE and not a normal autoencoder, because otherwise
+      we have no density on $z$ and don't know how to sample.
+
+    \item We need the prior loss $KL(q(Z) | p(Z | X))$, otherwise it would
+      just collapse with zero variance and be a normal autoencoder.
+
+    \item This gives us a sense of \emph{continuity}, that is similar
+      inputs should have similar outputs. But it also means the model
+      has to learn to predict the mean blurry image for each sample.
+
+    \item MSE reconstruction loss assumes Gaussian noise in the output,
+      which also makes the images blurry.
+
+    \item VAE optimizes a lower bound on $p(x)$, and not $p(x)$ directly.
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -185,6 +218,15 @@
 \end{frame}
 
 \begin{frame}
+  \begin{center}
+    {\huge Glow: Generative Flow with Invertible 1x1 Convolutions (Jul. 2018)}
+    \\
+    {Diederik P. Kingma, Prafulla Dhariwal}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
   \frametitle{Glow Architecture}
 
   \includegraphics[width=1.0\textwidth]{glow-single-block.png}
@@ -235,7 +277,7 @@
   \]
 
   The cost of computing $det(\symbf{W})$ is $O(c^3)$, which is comparable to the cost
-  of $conv2D(\symbf{h}; \symbf{W})$, which is $O(h \cdot w \cdot c^2)$. They introduce
+  of $conv2D$, which is $O(h \cdot w \cdot c^2)$. They introduce
   a way of reducing this to $O(c)$ by using LU decomposition on $\symbf{W}$, but in the
   experiments they don't measure a significant difference in computation time.
 \end{frame}
@@ -253,9 +295,11 @@
     \begin{pmatrix} x_1 \\ s(x_1) x_2 + b(x_1) \end{pmatrix}.
   \]
 
-  where $s$ is an invertible network. Since an activation function is an
-  element-wise transformation its Jacobian is a diagonal matrix, so we just
-  have to make sure it is invertible (LeakyReLU instead of ReLU, etc.).
+  where $s$ is an invertible network.
+
+  % Since an activation function is an element-wise transformation its Jacobian
+  % is a diagonal matrix, so we just have to make sure it is invertible
+  % (LeakyReLU instead of ReLU, etc.).
 \end{frame}
 
 \begin{frame}
@@ -351,6 +395,13 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{Glow Samples trained on CelebA HQ}
+
+  \includegraphics[width=1.0\textwidth]{glow-more-samples.png}
+\end{frame}
+
+
+\begin{frame}
   \frametitle{Glow Interpolations in $z$}
 
   \includegraphics[width=0.9\textwidth]{glow-interpolations.png}
@@ -360,6 +411,20 @@
   \begin{center}
     \Huge \href{https://openai.com/blog/glow/}{Demo}
   \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Semantic Manipulation}
+
+  \begin{itemize}
+    \item Set a binary label for each image (smiling, blonde hair, young, etc.).
+    \item Calculate average $z$ for images with and without each attribute.
+    \item Use $(z_{pos} - z_{neg})$ as a direction for manipulating the attribute.
+    \item Done only after the model is trained, there is no supervised input when
+      training the model.
+
+    \item Almost all intermediate samples look like realistic faces.
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
